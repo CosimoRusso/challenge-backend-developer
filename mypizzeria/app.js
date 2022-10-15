@@ -2,13 +2,24 @@
 
 const path = require('path')
 const AutoLoad = require('@fastify/autoload')
+const errorCodes = require('fastify').errorCodes
 
 // Pass --options via CLI arguments in command to enable these options.
 module.exports.options = {}
 
 module.exports = async function (fastify, opts) {
   // Place here your custom code!
+  fastify.setErrorHandler(function (error, request, reply) {
+    if (error instanceof errorCodes.FST_ERR_BAD_STATUS_CODE) {
+      // Log error
+      this.log.error(error)
+      // Send error response
+      reply.status(500).send({ ok: false })
+    }else{
+      reply.status(error.statusCode).send({ok: false})
+    }
 
+  })
   // Do not touch the following lines
 
   // This loads all plugins defined in plugins
