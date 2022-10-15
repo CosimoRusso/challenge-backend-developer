@@ -13,12 +13,12 @@ async function register_jwt(fastify, options, done){
             try{
                 await request.jwtVerify()
             }catch(e){
-                throw UnauthorizedError()
+                throw new UnauthorizedError()
             }
 
             request.user = await User.findOne({username: request.user.payload.username});
             if (!request.user){
-                throw BadRequestError()
+                throw new BadRequestError()
             }
         }
     })

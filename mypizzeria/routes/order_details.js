@@ -8,7 +8,7 @@ module.exports = async function(fastify, opts){
         const user = request.user;
         const order = await Order.findOne({_id: request.params.order_id, user: user})
         if (!order){
-            throw BadRequestError()
+            throw new BadRequestError()
         }
         return order
     })

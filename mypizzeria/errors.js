@@ -1,14 +1,22 @@
-function Error(statusCode, message){
-    this.statusCode = statusCode || 500
-    this.message = message || "error"
+class APIError extends Error{
+    constructor(statusCode, message){
+        super(message);
+        this.statusCode = statusCode || 500
+        this.message = message || "error"
+    }
+
 }
 
-function BadRequestError(){
-    return new Error(400, "Bad Request")
+class BadRequestError extends APIError{
+    constructor(message) {
+        super(400, message || "Bad Request");
+    }
 }
 
-function UnauthorizedError(){
-    return new Error(401, "Unauthorized")
+class UnauthorizedError extends APIError{
+    constructor(message) {
+        super(401, message || "Unauthorized");
+    }
 }
 
 module.exports = {BadRequestError, UnauthorizedError}

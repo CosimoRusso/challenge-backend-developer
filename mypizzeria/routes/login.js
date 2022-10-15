@@ -14,7 +14,7 @@ module.exports = async function (fastify, opts) {
         }
         const passwordMatches = await user.comparePassword(request.body.password)
         if (!passwordMatches){
-            throw BadRequestError()
+            throw new BadRequestError()
         }
         const payload = {username: user.username}
         const token = fastify.jwt.sign({ payload })
