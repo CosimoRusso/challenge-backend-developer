@@ -10,7 +10,7 @@ module.exports.options = {}
 module.exports = async function (fastify, opts) {
   // Place here your custom code!
   fastify.setErrorHandler(function (error, request, reply) {
-    if (error instanceof errorCodes.FST_ERR_BAD_STATUS_CODE) {
+    if (!error.statusCode || error instanceof errorCodes.FST_ERR_BAD_STATUS_CODE) {
       // Log error
       this.log.error(error)
       // Send error response
