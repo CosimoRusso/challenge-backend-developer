@@ -1,7 +1,7 @@
 const {test} = require("tap");
 const {build} = require("../helper");
 
-test("change order status", async t => {
+test("get order details", async t => {
     const app = await build(t)
 
     let res = await app.inject({
@@ -26,13 +26,10 @@ test("change order status", async t => {
     })
     const order_id = res.json()._id
     res = await app.inject({
-        method: "PATCH",
-        url: `/orders/${order_id}`,
-        headers: {authorization: `Bearer ${token}`},
-        body: {
-            status: 'RECEIVED'
-        }
+        method: "GET",
+        url: `/orders/${order_id}/details`,
+        headers: {authorization: `Bearer ${token}`}
     });
     t.same(res.statusCode, 200)
-    t.same(res.json().status, "RECEIVED")
+    t.same(res.json()._id, order_id)
 })
