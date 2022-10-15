@@ -3,7 +3,7 @@ const Product = require("../models/Product");
 const User = require("../models/User");
 module.exports = async function(fastify, opts){
     fastify.post('/orders', async function (request, reply) {
-        const user = await User.findOne({username: request.user.payload.username})
+        const user = request.user;
         const productNames = request.body.products.map(p => p.code)
         const products = await Product.find({code: {$in: productNames}})
         const product_codes = products.map(p => p.code)
