@@ -1,19 +1,12 @@
 const {test} = require("tap");
 const {build} = require("../helper");
+const {doLogin} = require("../utils");
 
 test("get order details", async t => {
     const app = await build(t)
 
+    const token = await doLogin(app);
     let res = await app.inject({
-        method: "POST",
-        url: '/login',
-        body: {
-            username: 'test_user',
-            password: 'password'
-        }
-    })
-    token = res.json().token
-    res = await app.inject({
         method: "POST",
         url: '/orders',
         headers: {authorization: `Bearer ${token}`},
