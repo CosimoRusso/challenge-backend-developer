@@ -1,7 +1,7 @@
 const {test} = require("tap");
 const {build} = require("../helper");
 
-test("count products", async t => {
+test("post new order", async t => {
     const app = await build(t)
 
     let res = await app.inject({
@@ -14,12 +14,15 @@ test("count products", async t => {
     })
     token = res.json().token
     res = await app.inject({
-        method: "GET",
-        url: '/products/all',
-        headers: {authorization: `Bearer ${token}`}
+        method: "POST",
+        url: '/orders',
+        headers: {authorization: `Bearer ${token}`},
+        body: {
+            products: [
+                {code: 'pizza_margherita', quantity: 1},
+                {code: 'coca_cola', quantity: 2}
+            ]
+        }
     })
-    t.same(res.statusCode, 200)
-    res = res.json()
-    t.same(res.results.length, 5)
-    t.ok(res.results.length < res.count)
+    t.same(res.statusCode, 201)
 })
