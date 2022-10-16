@@ -5,7 +5,7 @@ const calculateTotalPrice = require("../utils/calculateTotalPrice");
 
 module.exports = async function(fastify, opts){
     fastify.post('/orders', async function (request, reply) {
-        const user = request.user;
+        const user_id = request.user_id;
         const productNames = request.body.products.map(p => p.code)
         const products = await Product.find({code: {$in: productNames}})
         const productCodes = products.map(p => p.code)
@@ -15,7 +15,7 @@ module.exports = async function(fastify, opts){
         // calculate price
         const totalPrice = calculateTotalPrice(request.body.products, products)
         const order = await Order.create({
-            products, user, totalPrice
+            products, user:user_id, totalPrice
         })
         reply.status(201)
         return order
