@@ -10,7 +10,6 @@ const productSchema = {
 const productListSchema = {
     type: "array",
     items: productSchema,
-    minSize: 1
 }
 
 const paginatedProducts = {
@@ -27,4 +26,4 @@ const productsResponseSchema = {
     }
 }
 
-module.exports = {productsResponseSchema};
+module.exports = {productsResponseSchema, productSchema};

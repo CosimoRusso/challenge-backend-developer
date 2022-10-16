@@ -15,7 +15,8 @@ const OrderSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ["ORDERED", "RECEIVED"]
+        enum: ["ORDERED", "RECEIVED"],
+        default: "ORDERED"
     },
     totalPrice: {
         type: Number

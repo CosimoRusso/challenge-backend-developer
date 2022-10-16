@@ -2,7 +2,7 @@
 
 const User = require('../models/User')
 const errorCodes = require('fastify').errorCodes
-const {BadRequestError} = require("../errors")
+const {BadRequestError, UnauthorizedError} = require("../errors")
 
 module.exports = async function (fastify, opts) {
     fastify.post('/login', async function (request, reply) {
@@ -10,11 +10,11 @@ module.exports = async function (fastify, opts) {
             username: request.body.username,
         });
         if (!user){
-            throw errorCodes.FST_ERR_NOT_FOUND()
+            throw new UnauthorizedError("Wrong username")
         }
         const passwordMatches = await user.comparePassword(request.body.password)
         if (!passwordMatches){
-            throw new BadRequestError()
+            throw new UnauthorizedError("Wrong password")
         }
         const payload = {user_id: user._id}
         const token = fastify.jwt.sign({ payload })

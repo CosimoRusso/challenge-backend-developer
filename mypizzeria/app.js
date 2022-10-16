@@ -16,7 +16,7 @@ module.exports = async function (fastify, opts) {
       // Send error response
       reply.status(500).send({ ok: false })
     }else{
-      reply.status(error.statusCode).send({ok: false})
+      reply.status(error.statusCode).send({ok: false, message: error.message})
     }
 
   })

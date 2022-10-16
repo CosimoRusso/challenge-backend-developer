@@ -15,7 +15,7 @@ test('wrong username', async (t) => {
             password: 'password'
         }
     })
-    t.same(res.statusCode, 404)
+    t.same(res.statusCode, 401)
 })
 
 test('wrong password', async (t) => {
@@ -29,7 +29,7 @@ test('wrong password', async (t) => {
             password: 'xxxxxxxxxx'
         }
     })
-    t.same(res.statusCode, 400)
+    t.same(res.statusCode, 401)
 })
 
 test("correct login", async t => {

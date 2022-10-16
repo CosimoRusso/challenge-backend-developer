@@ -10,15 +10,22 @@ module.exports = async function(fastify, opts){
     fastify.post('/orders', options, async function (request, reply) {
         const user_id = request.user_id;
         const productNames = request.body.products.map(p => p.code)
-        const products = await Product.find({code: {$in: productNames}})
-        const productCodes = products.map(p => p.code)
+        const dbProducts = await Product.find({code: {$in: productNames}})
+        const dbProductCodes = dbProducts.map(p => p.code)
         // all products exist
-        checkAllProductsExist(productNames, productCodes)
+        checkAllProductsExist(productNames, dbProductCodes)
+
+        const orderProducts = request.body.products.map(reqProd => {
+            return {
+                product: dbProducts.find(p => p.code === reqProd.code),
+                quantity: reqProd.quantity
+            }
+        })
 
         // calculate price
-        const totalPrice = calculateTotalPrice(request.body.products, products)
+        const totalPrice = calculateTotalPrice(request.body.products, dbProducts)
         const order = await Order.create({
-            products, user:user_id, totalPrice
+            products: orderProducts, user:user_id, totalPrice
         })
         reply.status(201)
         return order
