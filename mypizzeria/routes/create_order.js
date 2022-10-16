@@ -2,9 +2,12 @@ const Order = require("../models/Order");
 const Product = require("../models/Product");
 const checkAllProductsExist = require("../utils/checkAllProductsExist");
 const calculateTotalPrice = require("../utils/calculateTotalPrice");
+const {orderValidatorSchema} = require("../schemas/order_validator");
 
 module.exports = async function(fastify, opts){
-    fastify.post('/orders', async function (request, reply) {
+    const options = {schema: {body: orderValidatorSchema}}
+
+    fastify.post('/orders', options, async function (request, reply) {
         const user_id = request.user_id;
         const productNames = request.body.products.map(p => p.code)
         const products = await Product.find({code: {$in: productNames}})
