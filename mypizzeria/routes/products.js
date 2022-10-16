@@ -1,8 +1,10 @@
 const Product = require("../models/Product");
-
+const {productsResponseSchema} = require('../schemas/products_schema')
 
 module.exports = async function(fastify, opts){
-    fastify.get('/products/all', async function (request, reply) {
+    const options = {schema: productsResponseSchema}
+
+    fastify.get('/products/all', options, async function (request, reply) {
         const limit = Math.min(request.query.limit || 5, 5);
         const skip = request.query.skip || 0;
 

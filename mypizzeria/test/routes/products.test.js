@@ -16,3 +16,17 @@ test("count products", async t => {
     t.same(res.results.length, 5)
     t.ok(res.results.length < res.count)
 })
+
+test("serializer prevents product id in response", async t => {
+    const app = await build(t)
+
+    const token = await doLogin(app);
+    let res = await app.inject({
+        method: "GET",
+        url: '/products/all',
+        headers: {authorization: `Bearer ${token}`}
+    })
+    t.same(res.statusCode, 200)
+    res = res.json()
+    t.ok(res.results[0]._id === undefined)
+})
