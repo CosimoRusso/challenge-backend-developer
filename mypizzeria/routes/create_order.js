@@ -3,9 +3,17 @@ const Product = require("../models/Product");
 const checkAllProductsExist = require("../utils/checkAllProductsExist");
 const calculateTotalPrice = require("../utils/calculateTotalPrice");
 const {orderValidatorSchema} = require("../schemas/order_validator");
+const {orderSchema} = require("../schemas/orders_schema");
 
 module.exports = async function(fastify, opts){
-    const options = {schema: {body: orderValidatorSchema}}
+    const options = {
+        schema: {
+            body: orderValidatorSchema,
+            response: {
+                201: orderSchema
+            }
+        }
+    }
 
     fastify.post('/orders', options, async function (request, reply) {
         const user_id = request.user_id;

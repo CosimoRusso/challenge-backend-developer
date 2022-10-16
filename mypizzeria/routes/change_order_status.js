@@ -12,7 +12,7 @@ module.exports = async function(fastify, opts){
         }
         order.status = new_status;
         await order.save()
-        return order
+        return {_id: order._id, status: order.status}
     })
 }
 

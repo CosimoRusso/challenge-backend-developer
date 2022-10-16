@@ -34,15 +34,15 @@ async function fillDatabase () {
     const coca_cola = products[5]
     orders = [
         Order({products: [
-                {product: margherita, quantity: 2},
-                {product: coca_cola, quantity: 2},
+                {product: margherita._id, quantity: 2},
+                {product: coca_cola._id, quantity: 2},
             ],
             user: users[0],
             totalPrice: 14
         }),
         Order({products: [
-                {product: diavola, quantity: 1},
-                {product: coca_cola, quantity: 1},
+                {product: diavola._id, quantity: 1},
+                {product: coca_cola._id, quantity: 1},
             ],
             user: users[0],
             totalPrice: 8

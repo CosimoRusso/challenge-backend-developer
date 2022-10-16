@@ -19,4 +19,10 @@ class UnauthorizedError extends APIError{
     }
 }
 
-module.exports = {BadRequestError, UnauthorizedError}
+class NotFoundError extends APIError{
+    constructor(message) {
+        super(404, message || "Not Found");
+    }
+}
+
+module.exports = {BadRequestError, UnauthorizedError, NotFoundError}
