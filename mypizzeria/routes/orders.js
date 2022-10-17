@@ -1,5 +1,6 @@
 const Order = require("../models/Order");
 const {paginatedOrdersSchema} = require("../schemas/orders_schema");
+const paginate = require("../utils/paginator");
 
 
 module.exports = async function(fastify, opts){
@@ -14,10 +15,9 @@ module.exports = async function(fastify, opts){
 
     fastify.get('/orders/all', options, async function (request, reply) {
         const user_id = request.user_id;
-        const limit = Math.min(request.query.limit || 5, 5);
-        const skip = request.query.skip || 0;
+        const pagination = paginate(request)
 
-        const orders = await Order.find({user: user_id}, {}, {skip, limit}).populate("products.product")
+        const orders = await Order.find({user: user_id}, {}, pagination).populate("products.product")
         const total = await Order.count()
 
         return {
